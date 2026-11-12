@@ -30,7 +30,7 @@ $subtitle-color: #161419;
 $border-color: #94918f;
 
 body {
-  background-color: $blog-bg;
+  background-color: var(--color-bg);
   display: flex;
   font-family: $subtitle-font;
   justify-content: center;
@@ -44,7 +44,7 @@ body {
 }
 
 .blog {
-  background-color: $blog-bg;
+  background-color: var(--color-bg);
   max-width: none;
   display: grid;
   height: 100vh;
@@ -82,7 +82,7 @@ body {
   &-menu {
     font-size: 22px;
     text-decoration: none;
-    color: $subtitle-color;
+    color: var(--color-text);
     display: flex;
     letter-spacing: -0.5px;
     align-items: center;
@@ -128,7 +128,7 @@ body {
         content: '';
         width: 16px;
         height: 16px;
-        background-color: $subtitle-color;
+        background-color: var(--color-text);
         left: 0;
         border-radius: 1px;
         margin-right: 14px;
@@ -140,7 +140,7 @@ body {
         border-radius: 50%;
         width: 12px;
         height: 12px;
-        background-color: $subtitle-color;
+        background-color: var(--color-text);
         margin-right: 12px;
       }
     }
@@ -154,8 +154,8 @@ body {
       position: fixed;
       inset: 0;
       z-index: 50;
-      background-color: $blog-bg;
-      padding: 80px 28px 28px;
+      background-color: var(--color-bg);
+      padding: 80px 20px 20px;
       border-right: 0;
       transform: translateX(-100%);
       transition: transform 0.25s ease;
@@ -264,7 +264,7 @@ body {
   }
 
   a {
-    color: $subtitle-color;
+    color: var(--color-text);
     text-decoration: none;
     font-size: 26px;
     letter-spacing: -1px;
@@ -272,7 +272,7 @@ body {
     justify-content: flex-end;
     align-items: center;
     margin-top: auto;
-    border-top: 1px solid $border-color;
+    border-top: 1px solid var(--color-border);
     padding-top: 14px;
 
     svg {
@@ -301,7 +301,7 @@ body {
   display: flex;
   flex-direction: column;
   scroll-snap-type: y mandatory;
-  border-right: 1px solid $border-color;
+  border-right: 1px solid var(--color-border);
 
   @media screen and (max-width: 768px) {
     border-right: 0;
@@ -322,8 +322,8 @@ body {
 
 marquee {
   font-size: 20px;
-  background-color: $body-bg;
-  color: $blog-bg;
+  background-color: var(--color-text);
+  color: var(--color-bg);
   padding: 6px 0;
   width: calc(100% + 44px);
   margin-left: -20px;
@@ -338,7 +338,7 @@ marquee {
     position: relative;
     top: -1px;
     vertical-align: baseline;
-    background-color: $blog-bg;
+    background-color: var(--color-bg);
     margin: 0 16px;
   }
 }
@@ -354,7 +354,7 @@ marquee {
       border-radius: 50%;
       width: 9px;
       height: 9px;
-      background-color: rgb(22 20 25);
+      background-color: var(--color-text);
       margin-right: 6px;
     }
   }
@@ -452,12 +452,12 @@ marquee {
   width: 100%;
   aspect-ratio: 1/1;
   border-radius: 50%;
-  background-color: $body-bg;
+  background-color: var(--color-bg);
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  color: $blog-bg;
+  color: var(--color-bg);
   padding: 20px;
   text-align: center;
   margin-top: 40px;
@@ -508,7 +508,7 @@ marquee {
   border: 0;
   padding: 0;
   cursor: pointer;
-  color: $subtitle-color;
+  color: var(--color-text);
 
   @media screen and (max-width: 1030px) {
     display: inline-block;
@@ -635,8 +635,8 @@ html {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  background-color: $blog-bg;
-  color: $subtitle-color;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 .page-nav {
@@ -644,7 +644,7 @@ html {
   align-items: center;
   justify-content: space-between;
   padding: 24px clamp(20px, 4vw, 64px);
-  border-bottom: 1px solid $border-color;
+  border-bottom: 1px solid var(--color-border);
   font-family: $subtitle-font;
 
   &__brand {
@@ -652,7 +652,7 @@ html {
     font-weight: 700;
     font-size: 22px;
     letter-spacing: -1px;
-    color: $title-color;
+    color: var(--color-text);
     text-decoration: none;
 
     span {
@@ -667,7 +667,7 @@ html {
     gap: 28px;
 
     a {
-      color: $subtitle-color;
+      color: var(--color-text);
       text-decoration: none;
       font-size: 17px;
       letter-spacing: -0.3px;
@@ -717,7 +717,7 @@ html {
 }
 
 .page-head {
-  border-bottom: 1px solid $border-color;
+  border-bottom: 1px solid var(--color-border);
   padding-bottom: 28px;
   margin-bottom: 40px;
 }
@@ -727,7 +727,7 @@ html {
   font-style: italic;
   font-size: 18px;
   margin-bottom: 14px;
-  color: $subtitle-color;
+  color: var(--color-text);
 }
 
 .page-title {
@@ -737,7 +737,7 @@ html {
   letter-spacing: -3px;
   line-height: 1;
   margin: 0 0 18px;
-  color: $title-color;
+  color: var(--color-text);
 }
 
 .page-deck {
@@ -745,7 +745,7 @@ html {
   line-height: 1.45;
   max-width: 55ch;
   margin: 0;
-  color: $subtitle-color;
+  color: var(--color-text);
 }
 
 /* ---------- Prose (markdown article body) ---------- */
@@ -753,7 +753,7 @@ html {
 .prose {
   font-size: 18px;
   line-height: 1.65;
-  color: $subtitle-color;
+  color: var(--color-text);
   max-width: 65ch;
 
   > * + * {
@@ -766,7 +766,7 @@ html {
     font-size: 32px;
     letter-spacing: -1px;
     margin-top: 1.6em;
-    color: $title-color;
+    color: var(--color-text);
   }
 
   h3 {
@@ -775,11 +775,11 @@ html {
     font-size: 24px;
     letter-spacing: -0.5px;
     margin-top: 1.4em;
-    color: $title-color;
+    color: var(--color-text);
   }
 
   a {
-    color: $title-color;
+    color: var(--color-text);
     text-decoration: underline;
     text-underline-offset: 3px;
     text-decoration-thickness: 1px;
@@ -793,7 +793,7 @@ html {
     border-left: 1px solid $border-color;
     padding-left: 20px;
     margin: 1.6em 0;
-    color: $title-color;
+    color: var(--color-text);
   }
 
   code {
@@ -805,8 +805,8 @@ html {
   }
 
   pre {
-    background: $body-bg;
-    color: $blog-bg;
+    background: var(--color-bg);
+    color: var(--color-text);
     padding: 20px;
     overflow-x: auto;
     font-size: 14px;
@@ -836,7 +836,7 @@ html {
 
   hr {
     border: 0;
-    border-top: 1px solid $border-color;
+    border-top: 1px solid var(--color-border);
     margin: 2em 0;
   }
 }
@@ -844,8 +844,8 @@ html {
 /* ---------- Footer ---------- */
 
 .site-footer {
-  border-top: 1px solid $border-color;
-  background-color: $blog-bg;
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-bg);
   margin-top: auto;
 
   &__inner {
@@ -869,7 +869,7 @@ html {
     font-weight: 700;
     font-size: 22px;
     letter-spacing: -1px;
-    color: $title-color;
+    color: var(--color-text);
 
     span {
       font-family: $italic-font;
@@ -885,7 +885,7 @@ html {
     gap: 24px;
 
     a {
-      color: $subtitle-color;
+      color: var(--color-text);
       text-decoration: none;
       font-size: 15px;
 
@@ -898,7 +898,7 @@ html {
 
   &__meta {
     font-size: 13px;
-    color: $subtitle-color;
+    color: var(--color-text);
     font-family: $italic-font;
     font-style: italic;
   }
@@ -916,12 +916,12 @@ html {
   grid-template-columns: 220px 1fr;
   gap: 28px;
   padding: 28px 0;
-  border-top: 1px solid $border-color;
+  border-top: 1px solid var(--color-border);
   text-decoration: none;
   color: inherit;
 
   &:last-child {
-    border-bottom: 1px solid $border-color;
+    border-bottom: 1px solid var(--color-border);
   }
 
   &__cover img {
@@ -946,7 +946,7 @@ html {
     letter-spacing: -1px;
     line-height: 1.1;
     margin: 0 0 10px;
-    color: $title-color;
+    color: var(--color-text);
 
     span {
       font-family: $italic-font;
@@ -969,7 +969,7 @@ html {
     font-size: 12px;
     font-family: $italic-font;
     font-style: italic;
-    color: $subtitle-color;
+    color: var(--color-text);
 
     span:before,
     a:before {
@@ -995,7 +995,7 @@ html {
   font-size: 14px;
   font-family: $italic-font;
   font-style: italic;
-  color: $subtitle-color;
+  color: var(--color-text);
   margin-top: 18px;
 }
 
@@ -1005,11 +1005,11 @@ html {
   gap: 24px;
   margin-top: 64px;
   padding-top: 24px;
-  border-top: 1px solid $border-color;
+  border-top: 1px solid var(--color-border);
 
   a {
     text-decoration: none;
-    color: $subtitle-color;
+    color: var(--color-text);
 
     span {
       display: block;
@@ -1024,7 +1024,7 @@ html {
       font-weight: 500;
       font-size: 20px;
       letter-spacing: -0.5px;
-      color: $title-color;
+      color: var(--color-text);
     }
   }
 
@@ -1047,10 +1047,10 @@ html {
   margin-bottom: 40px;
 
   a {
-    border: 1px solid $border-color;
+    border: 1px solid var(--color-border);
     padding: 6px 14px;
     text-decoration: none;
-    color: $subtitle-color;
+    color: var(--color-text);
     font-size: 14px;
 
     &:before {
@@ -1058,9 +1058,9 @@ html {
     }
 
     &:hover {
-      background: $body-bg;
-      color: $blog-bg;
-      border-color: $body-bg;
+      background: var(--color-bg);
+      color: var(--color-bg);
+      border-color: var(--color-border);
     }
   }
 }
@@ -1088,12 +1088,12 @@ html {
     font-size: 16px;
     background: transparent;
     border: 0;
-    border-bottom: 1px solid $border-color;
+    border-bottom: 1px solid var(--color-border);
     padding: 10px 0;
-    color: $title-color;
+    color: var(--color-text);
 
     &:focus {
-      border-bottom-color: $title-color;
+      border-bottom-color: var(--color-text);
     }
   }
 
@@ -1107,8 +1107,8 @@ html {
     font-family: $title-font;
     font-weight: 600;
     font-size: 16px;
-    background: $body-bg;
-    color: $blog-bg;
+    background: var(--color-bg);
+    color: var(--color-bg);
     border: 0;
     padding: 14px 28px;
     cursor: pointer;
@@ -1150,7 +1150,7 @@ html {
     font-family: $italic-font;
     font-style: italic;
     font-size: 13px;
-    color: $subtitle-color;
+    color: var(--color-text);
   }
 
   &__title {
@@ -1159,7 +1159,7 @@ html {
     font-size: 22px;
     letter-spacing: -0.5px;
     margin: 4px 0 6px;
-    color: $title-color;
+    color: var(--color-text);
   }
 
   &__summary {
@@ -1187,7 +1187,7 @@ html {
     font-size: clamp(120px, 28vw, 320px);
     letter-spacing: -8px;
     line-height: 1;
-    color: $title-color;
+    color: var(--color-text);
   }
 
   &__title {
@@ -1198,7 +1198,7 @@ html {
   }
 
   a {
-    color: $title-color;
+    color: var(--color-text);
     text-decoration: underline;
     text-underline-offset: 4px;
   }

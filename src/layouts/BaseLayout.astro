@@ -47,4 +47,11 @@ const ogImage = image ? new URL(image, Astro.site ?? Astro.url).toString() : und
 
 <style lang="scss" is:global>
   @use '../styles/global.scss';
+  @use '../styles/themes.scss';
 </style>
+
+<script is:inline>
+  const stored = localStorage.getItem('theme');
+  const system = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = stored ?? system;
+</script>

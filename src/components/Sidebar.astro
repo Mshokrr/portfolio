@@ -28,7 +28,7 @@ const fmt = (d: Date) =>
     .format(d)
     .replaceAll('/', '.');
 
-const sorted = [...entries].sort((a, b) => a.data.order - b.data.order);
+const sorted = entries.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <div class="blog-part right-blog">
