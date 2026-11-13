@@ -15,7 +15,7 @@
     "@astrojs/mdx": "^5.0.0",
     "@astrojs/rss": "^4.0.18",
     "@lucide/astro": "^1.72.0",
-    "astro": "^6.3.7",
+    "astro": "^7.4.10",
     "sass": "^1.100.0"
   },
   "engines": {
