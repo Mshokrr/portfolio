@@ -1,0 +1,6 @@
+---
+title: 'dlc Travel Tech'
+subtitle: "Blonde received widespread acclaim, with critics praising Ocean's introspective lyrics and the album's"
+date: 2017 - 2019
+order: 4
+---

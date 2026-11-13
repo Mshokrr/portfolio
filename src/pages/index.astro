@@ -5,10 +5,9 @@ import Menu from '../components/Menu.astro';
 import StickyHeader from '../components/StickyHeader.astro';
 import FeaturedArticle from '../components/FeaturedArticle.astro';
 import Sidebar from '../components/Sidebar.astro';
-import Footer from '../components/Footer.astro';
 
 const posts = await getCollection('posts', ({ data }) => data.featured);
-const featured = await getCollection('featured');
+const featured = await getCollection('featured', ({ data }) => !data.hidden);
 
 const pinned = posts[0];
 posts.sort((a, b) => +b.data.date - +a.data.date);
@@ -18,9 +17,9 @@ posts.sort((a, b) => +b.data.date - +a.data.date);
   <div class="blog">
     <Menu />
     <StickyHeader
-      title="My"
+      title="The"
       subtitle="Portfolio"
-      pageNumber={pinned?.data.pageNumber ?? 'NO. 01'}
+      versionNumber={pinned?.data.pageNumber ?? 'vO. 01'}
     />
 
     <div class="blog-header-container">

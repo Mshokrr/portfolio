@@ -2,10 +2,10 @@
 interface Props {
   title: string;
   subtitle?: string;
-  pageNumber?: string;
+  versionNumber?: string;
 }
 
-const { title, subtitle = 'Pinned Issue', pageNumber = 'NO. 01' } = Astro.props;
+const { title, subtitle = 'Pinned Issue', versionNumber = 'NO. 01' } = Astro.props;
 ---
 
 <div class="blog-header blog-is-sticky">
@@ -14,6 +14,6 @@ const { title, subtitle = 'Pinned Issue', pageNumber = 'NO. 01' } = Astro.props;
     <div class="blog-menu rounded small-title">{subtitle}</div>
   </div>
   <div class="blog-article page-number">
-    {pageNumber}
+    {versionNumber}
   </div>
 </div>

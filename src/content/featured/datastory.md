@@ -1,6 +1,6 @@
 ---
-title: 'A24 Is Launching Its Own Beauty Brand'
+title: 'Datastory'
 subtitle: "Blonde received widespread acclaim, with critics praising Ocean's introspective lyrics and the album's"
-date: 2021-06-12
-order: 4
+date: 2024 - Present
+order: 1
 ---

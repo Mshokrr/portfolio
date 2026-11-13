@@ -25,8 +25,9 @@ const featured = defineCollection({
   schema: z.object({
     title: z.string(),
     subtitle: z.string(),
-    date: z.coerce.date(),
+    date: z.string(),
     order: z.number(),
+    hidden: z.boolean().default(false),
   }),
 });
 
