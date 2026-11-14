@@ -1,18 +1,23 @@
 ---
 import { getCollection } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
+import { slugify } from '../../utils/slugify';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
-  const tags = new Set<string>();
-  posts.forEach((p) => p.data.tags.forEach((t) => tags.add(t)));
 
-  return [...tags].map((tag) => ({
-    params: { tag },
+  // One page per slug; keep the first spelling of each tag as its display label
+  const labels = new Map<string, string>();
+  posts.forEach((p) =>
+    p.data.tags.forEach((t) => labels.set(slugify(t), labels.get(slugify(t)) ?? t)),
+  );
+
+  return [...labels].map(([slug, tag]) => ({
+    params: { tag: slug },
     props: {
       tag,
       posts: posts
-        .filter((p) => p.data.tags.includes(tag))
+        .filter((p) => p.data.tags.some((t) => slugify(t) === slug))
         .sort((a, b) => +b.data.date - +a.data.date),
     },
   }));

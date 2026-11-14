@@ -12,6 +12,16 @@ const {
 } = Astro.props;
 ---
 
-<marquee width="100%" direction="left">
-  {items.map((text) => <span>{text}</span>)}
-</marquee>
+<!-- CSS-driven ticker: the track holds two identical groups and slides by exactly one
+     group's width, so the loop is seamless. Transform animations run on the GPU, which
+     keeps them smooth in Safari (the <marquee> element is deprecated and stutters there). -->
+<div class="marquee">
+  <div class="marquee__track">
+    <div class="marquee__group">
+      {items.map((text) => <span>{text}</span>)}
+    </div>
+    <div class="marquee__group" aria-hidden="true">
+      {items.map((text) => <span>{text}</span>)}
+    </div>
+  </div>
+</div>

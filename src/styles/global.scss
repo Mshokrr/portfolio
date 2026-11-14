@@ -1,5 +1,3 @@
-@use 'sass:color';
-
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,500&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 * {
@@ -23,11 +21,85 @@ a {
 $title-font: 'Space Grotesk', sans-serif;
 $subtitle-font: 'Inter', sans-serif;
 $italic-font: 'Playfair Display', serif;
-$blog-bg: #e9e6e4;
-$body-bg: #121418;
-$title-color: #121418;
-$subtitle-color: #161419;
-$border-color: #94918f;
+
+// Big titles ("The" in the sticky header, one word per article) share one size.
+// It is solved from the space the sticky + article columns have together: the
+// sticky column is `auto`, so it shrinks to fit "The" and the rest goes to the
+// articles. These are each title's width in em for its longest expected word.
+$title-fit-sticky: 1.9;
+$title-fit-article: 4.6;
+$blog-pad-x: clamp(1rem, 2vw, 2.5rem);
+
+// Text buttons get a bolder look on hover/focus/press. A text-stroke thickens
+// the glyphs without changing their metrics, so nothing around them shifts.
+// Font family can't be transitioned, so links that swap fonts on hover fade
+// the new face in instead of snapping.
+@keyframes font-swap {
+  from {
+    opacity: 0.35;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+// Same line box for both faces (Inter and Playfair have different natural
+// heights), so swapping fonts never moves neighbouring elements.
+@mixin font-swap {
+  line-height: 1.3;
+
+  @media (hover: hover) {
+    &:hover {
+      font-family: $italic-font;
+      font-style: italic;
+      animation: font-swap 0.25s ease;
+    }
+  }
+}
+
+// Filled call-to-action (the Send button, "Back to home")
+@mixin solid-button {
+  display: inline-block;
+  font-family: $title-font;
+  font-weight: 600;
+  font-size: 1rem;
+  background: var(--color-bg-inverse);
+  color: var(--color-text-inverse);
+  border: 0;
+  padding: 0.875rem 1.75rem;
+  cursor: pointer;
+  letter-spacing: -0.0187em;
+  text-decoration: none;
+  @include text-button;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+@mixin text-button {
+  transition:
+    -webkit-text-stroke-width 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.2s ease;
+
+  @media (hover: hover) {
+    &:hover {
+      -webkit-text-stroke: 0.025em currentColor;
+    }
+  }
+
+  &:focus-visible {
+    -webkit-text-stroke: 0.025em currentColor;
+  }
+
+  &:active {
+    -webkit-text-stroke: 0.05em currentColor;
+  }
+}
 
 body {
   background-color: var(--color-bg);
@@ -51,109 +123,83 @@ body {
   height: 100dvh;
   max-height: none;
   overflow: hidden;
-  grid-template-columns: 15% 20% 35% 30%;
+  grid-template-columns: 15% auto 1fr 30%;
   grid-template-rows: 100%;
   width: 100%;
-  padding: clamp(16px, 2vh, 32px) clamp(16px, 2vw, 40px);
+  padding: clamp(1rem, 2vh, 2rem) $blog-pad-x;
   position: relative;
 
+  // Width available to the grid, the share of it that goes to the sticky +
+  // article columns, and the fixed padding/margins inside those columns.
+  --blog-width: calc(100vw - 2 * #{$blog-pad-x});
+  --title-room: 0.55;
+  --title-chrome: 5rem;
+  --title-size: clamp(
+    2.5rem,
+    calc(
+      (var(--title-room) * var(--blog-width) - var(--title-chrome)) / #{$title-fit-sticky +
+        $title-fit-article}
+    ),
+    7.5rem
+  );
+
   @media screen and (max-width: 1030px) {
-    grid-template-columns: 20% 50% 30%;
-  }
-
-  @media screen and (max-width: 768px) {
-    grid-template-columns: 25% 75%;
-    width: 100%;
-    max-width: none;
-  }
-
-  @media screen and (max-width: 560px) {
-    grid-template-columns: 100%;
+    grid-template-columns: auto 1fr 30%;
+    --title-room: 0.7;
+    --title-chrome: 6.875rem; // + the sticky header's left margin
   }
 
   &-part {
-    padding: 0 20px;
+    padding: 0 1.25rem;
 
     &:not(:last-child) {
-      border-right: 1px solid $border-color;
+      border-right: 1px solid var(--color-border);
     }
 
     &.is-menu {
-      padding: 20px;
+      padding: 1.25rem;
     }
   }
 
   &-menu {
-    font-size: 22px;
+    font-size: clamp(1rem, 1.75vw, 1.375rem);
     text-decoration: none;
     color: var(--color-text);
     display: flex;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.0227em;
     align-items: center;
-
-    @media screen and (max-width: 1260px) {
-      font-size: 1.6vw;
-    }
 
     @media screen and (max-width: 1030px) {
       .is-menu & {
-        font-size: 24px;
+        font-size: 1.5rem;
       }
     }
 
     svg {
-      width: 22px;
-      margin-left: 4px;
+      width: 1em;
+      margin-left: 0.2em;
     }
 
     & + & {
-      margin-top: 24px;
+      margin-top: 1.5rem;
     }
 
     &.mention {
       margin-top: auto;
-      font-size: 19px;
-
-      @media screen and (max-width: 1260px) {
-        font-size: 1.4vw;
-      }
+      font-size: clamp(1rem, 1.5vw, 1.1875rem);
     }
 
     &.social {
-      margin-top: 8px;
-      font-size: 19px;
+      margin-top: 0.5rem;
+      font-size: clamp(1rem, 1.5vw, 1.1875rem);
       position: relative;
-      gap: 6px;
+      gap: 0.3em;
 
       svg {
         flex: none;
-        width: 16px;
-        height: 16px;
+        width: 0.85em;
+        height: 0.85em;
         margin: 0;
-      }
-
-      @media screen and (max-width: 1260px) {
-        font-size: 1.4vw;
-      }
-    }
-
-    &.subscribe {
-      margin-top: 8px;
-      font-size: 19px;
-      position: relative;
-
-      @media screen and (max-width: 1260px) {
-        font-size: 1.4vw;
-      }
-
-      &:before {
-        content: '';
-        width: 16px;
-        height: 16px;
-        background-color: var(--color-text);
-        left: 0;
-        border-radius: 1px;
-        margin-right: 14px;
       }
     }
 
@@ -161,10 +207,10 @@ body {
       &:before {
         content: '';
         border-radius: 50%;
-        width: 12px;
-        height: 12px;
+        width: 0.55em;
+        height: 0.55em;
         background-color: var(--color-text);
-        margin-right: 12px;
+        margin-right: 0.55em;
       }
     }
   }
@@ -178,7 +224,7 @@ body {
       inset: 0;
       z-index: 50;
       background-color: var(--color-bg);
-      padding: 80px 20px 20px;
+      padding: 5rem 1.25rem 1.25rem;
       border-right: 0;
       transform: translateX(-100%);
       transition: transform 0.25s ease;
@@ -191,22 +237,13 @@ body {
   }
 
   &-big__title {
-    font-size: 120px;
+    font-size: var(--title-size);
+    overflow-wrap: break-word;
     font-family: $title-font;
     font-weight: 700;
-    letter-spacing: -5px;
+    letter-spacing: -0.0417em;
     line-height: 1;
-    margin-bottom: 20px;
-
-    @media screen and (max-width: 1260px) {
-      font-size: 9vw;
-      letter-spacing: -2px;
-    }
-
-    @media screen and (max-width: 560px) {
-      font-size: 36px;
-      margin-bottom: 20px;
-    }
+    margin-bottom: 1.25rem;
   }
 
   &-header {
@@ -215,10 +252,10 @@ body {
   }
 
   &-article {
-    padding: 0 20px;
+    padding: 0 1.25rem;
 
     img {
-      height: 260px;
+      height: 16.25rem;
       max-height: 22vh;
       width: 100%;
       object-fit: cover;
@@ -227,34 +264,40 @@ body {
   }
 }
 
+// Menu links: bolder effect, plus the page nav's font swap on the main items.
+// Anchors only; other .blog-menu elements (date, labels) are static text.
+a.blog-menu {
+  @include text-button;
+
+  // Only the main menu items swap fonts; mention, social and "See All" just go bolder
+  &:not(.mention, .social, .rounded) {
+    @include font-swap;
+  }
+}
+
 .page-number {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   height: 100%;
-  font-size: 50px;
+  font-size: clamp(1.75rem, 4vw, 3.125rem);
   text-align: center;
-  letter-spacing: -3px;
+  letter-spacing: -0.06em;
   font-weight: lighter;
   font-family: $title-font;
-  border-right: 1px solid $border-color;
+  border-right: 1px solid var(--color-border);
   white-space: nowrap;
-
-  @media screen and (max-width: 1260px) {
-    font-size: 5vw;
-  }
 }
 
 .small-title {
-  border-bottom: 1px solid $border-color;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
 
   @media screen and (max-width: 560px) {
-    font-size: 14px;
-    position: absolute;
-    top: 10px;
-    right: 24px;
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0;
     border-bottom: 0;
   }
 }
@@ -266,10 +309,10 @@ body {
 
 .blog-article {
   h2 {
-    font-size: 26px;
+    font-size: 1.625rem;
     font-weight: 500;
     line-height: 1.2;
-    margin: 8px 0 8px;
+    margin: 0.5rem 0 0.5rem;
 
     span {
       font-family: $italic-font;
@@ -279,24 +322,25 @@ body {
 
   p {
     line-height: 1.5;
-    margin: 14px 0;
+    margin: 0.875rem 0;
   }
 
   a {
     color: var(--color-text);
     text-decoration: none;
-    font-size: 26px;
-    letter-spacing: -1px;
+    font-size: 1.625rem;
+    letter-spacing: -0.0385em;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     margin-top: auto;
     border-top: 1px solid var(--color-border);
-    padding-top: 14px;
+    padding-top: 0.875rem;
+    @include text-button;
 
     svg {
-      width: 26px;
-      margin-right: 10px;
+      width: 1em;
+      margin-right: 0.4em;
     }
   }
 }
@@ -305,7 +349,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 14px;
+  font-size: 0.875rem;
 
   span {
     font-family: $italic-font;
@@ -339,48 +383,68 @@ body {
   }
 }
 
-marquee {
-  font-size: 20px;
+.marquee {
+  font-size: 1.25rem;
   background-color: var(--color-text);
   color: var(--color-bg);
-  padding: 6px 0;
-  width: calc(100% + 44px);
-  margin-left: -20px;
+  padding: 0.375rem 0;
+  width: calc(100% + 2.75rem);
+  margin-left: -1.25rem;
   flex-shrink: 0;
+  overflow: hidden;
+
+  &__track {
+    display: flex;
+    width: max-content;
+    animation: marquee-scroll 30s linear infinite;
+    will-change: transform;
+  }
+
+  // Each group is at least as wide as the ticker, so short text still loops cleanly
+  &__group {
+    display: flex;
+    flex: none;
+    min-width: 100vw;
+    white-space: nowrap;
+  }
 
   span:before {
     display: inline-block;
     content: '';
     border-radius: 50%;
-    width: 10px;
-    height: 10px;
+    width: 0.5em;
+    height: 0.5em;
     position: relative;
     top: -1px;
     vertical-align: baseline;
     background-color: var(--color-bg);
-    margin: 0 16px;
+    margin: 0 0.8em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__track {
+      animation: none;
+    }
+  }
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
 .blog-right {
   overflow: auto;
-  height: calc(100% + 60px);
-  .rounded {
-    font-style: italic;
-    font-size: 18px;
-    &:before {
-      content: '';
-      border-radius: 50%;
-      width: 9px;
-      height: 9px;
-      background-color: var(--color-text);
-      margin-right: 6px;
-    }
-  }
+  height: calc(100% + 3.75rem);
 }
 
 .blog-right-title {
-  font-size: 25px;
+  font-size: 1.5625rem;
   font-family: $italic-font;
   font-style: italic;
 }
@@ -389,14 +453,14 @@ marquee {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid $border-color;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  margin-top: 100px;
-  letter-spacing: -1px;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
+  margin-top: 6.25rem;
+  letter-spacing: -0.0625rem;
 
   @media screen and (max-width: 1400px) {
-    margin-top: 88px;
+    margin-top: 5.5rem;
   }
 
   @media screen and (max-width: 1260px) {
@@ -415,37 +479,33 @@ marquee {
 }
 
 .blog-right-page {
-  font-size: 56px;
-  margin-bottom: 16px;
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
   font-family: $title-font;
 
   &-title {
     font-family: $title-font;
-    font-size: 28px;
+    font-size: 1.75rem;
     font-weight: 600;
     max-width: 16ch;
-    letter-spacing: -2px;
+    letter-spacing: -0.0714em;
   }
 
   &-subtitle {
     max-width: 33ch;
-    font-size: 15px;
-    margin-top: 12px;
+    font-size: 0.9375rem;
+    margin-top: 0.75rem;
     line-height: 1.4;
   }
 }
 
 .blog-right-container + .blog-right-container {
-  margin-top: 40px;
+  margin-top: 2.5rem;
 }
 
 .right-blog {
   display: flex;
   flex-direction: column;
-
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
 
   .blog-menu {
     @media screen and (max-width: 1030px) {
@@ -471,20 +531,20 @@ marquee {
   width: 100%;
   aspect-ratio: 1/1;
   border-radius: 50%;
-  background-color: var(--color-bg);
+  background-color: var(--color-bg-inverse);
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  color: var(--color-bg);
-  padding: 20px;
+  color: var(--color-text-inverse);
+  padding: 1.25rem;
   text-align: center;
-  margin-top: 40px;
+  margin-top: 2.5rem;
 
   &-title {
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: 600;
-    margin-bottom: 12px;
+    margin-bottom: 0.75rem;
     font-family: $title-font;
 
     @media screen and (max-width: 1030px) {
@@ -494,25 +554,21 @@ marquee {
 
   &-subtitle {
     max-width: 30ch;
-    font-size: 14px;
+    font-size: 0.875rem;
     line-height: 1.3;
-    margin-bottom: 16px;
+    margin-bottom: 1rem;
   }
 
   &-footer {
     font-family: $italic-font;
     font-style: italic;
-    font-size: 30px;
+    font-size: 1.875rem;
   }
 }
 
 .blog-is-sticky {
-  @media screen and (max-width: 560px) {
-    display: none;
-  }
-
   @media screen and (max-width: 1030px) {
-    margin-left: 30px;
+    margin-left: 1.875rem;
   }
 }
 
@@ -522,11 +578,11 @@ marquee {
 .menu-toggle {
   display: none;
   position: fixed;
-  top: 28px;
-  left: 24px;
+  top: 1.75rem;
+  left: 1.5rem;
   z-index: 60;
-  width: 28px;
-  height: 28px;
+  width: 1.75rem;
+  height: 1.75rem;
   background: transparent;
   border: 0;
   padding: 0;
@@ -540,7 +596,7 @@ marquee {
   &__bar {
     position: absolute;
     left: 0;
-    width: 28px;
+    width: 1.75rem;
     height: 2px;
     background: currentColor;
     transition:
@@ -550,25 +606,25 @@ marquee {
   }
 
   &__bar:nth-of-type(1) {
-    top: 4px;
+    top: 0.25rem;
   }
   &__bar:nth-of-type(2) {
-    top: 13px;
+    top: 0.8125rem;
   }
   &__bar:nth-of-type(3) {
-    top: 22px;
+    top: 1.375rem;
   }
 
   &.is-open {
     .menu-toggle__bar:nth-of-type(1) {
-      top: 13px;
+      top: 0.8125rem;
       transform: rotate(45deg);
     }
     .menu-toggle__bar:nth-of-type(2) {
       opacity: 0;
     }
     .menu-toggle__bar:nth-of-type(3) {
-      top: 13px;
+      top: 0.8125rem;
       transform: rotate(-45deg);
     }
   }
@@ -584,13 +640,12 @@ body.menu-open {
   /* The vw-based menu font-size collapses to nothing once the menu becomes
      a drawer — anchor it back to readable sizes. */
   .blog .blog-menu.mention,
-  .blog .blog-menu.subscribe,
   .blog .blog-menu.social {
-    font-size: 18px;
+    font-size: 1.125rem;
   }
 
   .is-menu .blog-menu.mention {
-    margin-top: 50px;
+    margin-top: 3.125rem;
   }
 }
 
@@ -603,7 +658,7 @@ body.menu-open {
     height: auto;
     min-height: 100vh;
     max-height: none;
-    padding: 80px 0 40px;
+    padding: 0 0 2.5rem;
     grid-template-columns: 100%;
     grid-template-rows: auto auto;
   }
@@ -621,9 +676,9 @@ body.menu-open {
   }
 
   .blog-big__title {
-    font-size: 18vw;
-    letter-spacing: -1.5px;
-    margin-bottom: 8px;
+    font-size: clamp(3rem, 14vw, 6rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
   }
 
   .blog-article img {
@@ -632,17 +687,83 @@ body.menu-open {
   }
 
   .blog-article h2 {
-    font-size: 22px;
+    font-size: 1.375rem;
   }
 
   .blog-article a {
-    font-size: 20px;
+    font-size: 1.25rem;
+  }
+
+  /* Masthead: title block on the left, issue number on the right, one rule underneath */
+  .blog-is-sticky {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    margin: 3rem 1.25rem 2rem;
+    border-bottom: 1px solid var(--color-border);
+
+    .blog-article {
+      padding: 0;
+    }
+
+    .small-title {
+      margin-bottom: 0;
+      padding-bottom: 1rem;
+      border-bottom: 0;
+    }
+
+    .page-number {
+      height: auto;
+      padding-bottom: 1rem;
+      text-align: right;
+      border-right: 0;
+    }
+  }
+
+  /* Sidebar: its children join the page flow, so the ticker can sit at the very
+     top of the page while "Experience" follows the articles */
+  .right-blog {
+    display: contents;
+  }
+
+  .right-blog .marquee {
+    order: -1;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .blog-right-title-container {
+    margin: 3rem 1.25rem 1.25rem;
+  }
+
+  .blog-right {
+    height: auto;
+    overflow: visible;
+    padding: 0 1.25rem;
+  }
+
+  /* The hamburger sits just below the ticker, so the open menu starts lower too */
+  .menu-toggle {
+    top: 3rem;
+  }
+
+  .blog .is-menu {
+    padding-top: 6.5rem;
+  }
+
+  .circle {
+    width: min(100%, 20rem);
+    margin-inline: auto;
+  }
+
+  .circle-title {
+    display: block;
   }
 }
 
 @media screen and (max-width: 560px) {
   .blog-big__title {
-    font-size: 22vw;
+    font-size: clamp(2.75rem, 18vw, 4.5rem);
   }
 }
 
@@ -667,21 +788,21 @@ html {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px clamp(20px, 4vw, 64px);
+  padding: 1.5rem clamp(1.25rem, 4vw, 4rem);
   border-bottom: 1px solid var(--color-border);
   font-family: $subtitle-font;
 
   &__start {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 0.75rem;
   }
 
   &__brand {
     font-family: $title-font;
     font-weight: 700;
-    font-size: 22px;
-    letter-spacing: -1px;
+    font-size: 1.375rem;
+    letter-spacing: -0.0455em;
     color: var(--color-text);
     text-decoration: none;
 
@@ -694,28 +815,25 @@ html {
 
   nav {
     display: flex;
-    gap: 28px;
+    gap: 1.75rem;
 
     a {
       color: var(--color-text);
       text-decoration: none;
-      font-size: 17px;
-      letter-spacing: -0.3px;
-
-      &:hover {
-        font-style: italic;
-        font-family: $italic-font;
-      }
+      font-size: 1.0625rem;
+      letter-spacing: -0.0176em;
+      @include text-button;
+      @include font-swap;
     }
   }
 
   @media screen and (max-width: 560px) {
     flex-direction: column;
-    gap: 12px;
-    padding: 20px;
+    gap: 0.75rem;
+    padding: 1.25rem;
 
     nav {
-      gap: 18px;
+      gap: 1.125rem;
       flex-wrap: wrap;
       justify-content: center;
     }
@@ -725,9 +843,9 @@ html {
 .page-main {
   flex: 1;
   width: 100%;
-  max-width: 920px;
+  max-width: 57.5rem;
   margin: 0 auto;
-  padding: clamp(32px, 6vw, 80px) clamp(20px, 4vw, 32px);
+  padding: clamp(2rem, 6vw, 5rem) clamp(1.25rem, 4vw, 2rem);
 }
 
 .page-body {
@@ -735,11 +853,11 @@ html {
 }
 
 .page-hero {
-  margin: 0 0 clamp(32px, 5vw, 56px);
+  margin: 0 0 clamp(2rem, 5vw, 3.5rem);
 
   img {
     width: 100%;
-    height: clamp(220px, 40vh, 420px);
+    height: clamp(13.75rem, 40vh, 26.25rem);
     object-fit: cover;
     filter: grayscale(1);
     display: block;
@@ -748,30 +866,30 @@ html {
 
 .page-head {
   border-bottom: 1px solid var(--color-border);
-  padding-bottom: 28px;
-  margin-bottom: 40px;
+  padding-bottom: 1.75rem;
+  margin-bottom: 2.5rem;
 }
 
 .page-eyebrow {
   font-family: $italic-font;
   font-style: italic;
-  font-size: 18px;
-  margin-bottom: 14px;
+  font-size: 1.125rem;
+  margin-bottom: 0.875rem;
   color: var(--color-text);
 }
 
 .page-title {
   font-family: $title-font;
   font-weight: 700;
-  font-size: clamp(40px, 7vw, 88px);
-  letter-spacing: -3px;
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  letter-spacing: -0.0341em;
   line-height: 1;
-  margin: 0 0 18px;
+  margin: 0 0 1.125rem;
   color: var(--color-text);
 }
 
 .page-deck {
-  font-size: 20px;
+  font-size: 1.25rem;
   line-height: 1.45;
   max-width: 55ch;
   margin: 0;
@@ -781,7 +899,7 @@ html {
 /* ---------- Prose (markdown article body) ---------- */
 
 .prose {
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 1.65;
   color: var(--color-text);
   max-width: 65ch;
@@ -793,8 +911,8 @@ html {
   h2 {
     font-family: $title-font;
     font-weight: 600;
-    font-size: 32px;
-    letter-spacing: -1px;
+    font-size: 2rem;
+    letter-spacing: -0.0312em;
     margin-top: 1.6em;
     color: var(--color-text);
   }
@@ -802,8 +920,8 @@ html {
   h3 {
     font-family: $title-font;
     font-weight: 500;
-    font-size: 24px;
-    letter-spacing: -0.5px;
+    font-size: 1.5rem;
+    letter-spacing: -0.0208em;
     margin-top: 1.4em;
     color: var(--color-text);
   }
@@ -811,17 +929,17 @@ html {
   a {
     color: var(--color-text);
     text-decoration: underline;
-    text-underline-offset: 3px;
+    text-underline-offset: 0.1875rem;
     text-decoration-thickness: 1px;
   }
 
   blockquote {
     font-family: $italic-font;
     font-style: italic;
-    font-size: 24px;
+    font-size: 1.5rem;
     line-height: 1.4;
-    border-left: 1px solid $border-color;
-    padding-left: 20px;
+    border-left: 1px solid var(--color-border);
+    padding-left: 1.25rem;
     margin: 1.6em 0;
     color: var(--color-text);
   }
@@ -829,17 +947,17 @@ html {
   code {
     font-family: $title-font;
     font-size: 0.92em;
-    background: rgba(18, 20, 24, 0.06);
-    padding: 2px 6px;
+    background: color-mix(in srgb, var(--color-text) 8%, transparent);
+    padding: 0.125rem 0.375rem;
     border-radius: 2px;
   }
 
   pre {
-    background: var(--color-bg);
-    color: var(--color-text);
-    padding: 20px;
+    background: var(--color-bg-inverse);
+    color: var(--color-text-inverse);
+    padding: 1.25rem;
     overflow-x: auto;
-    font-size: 14px;
+    font-size: 0.875rem;
     line-height: 1.55;
 
     code {
@@ -879,26 +997,26 @@ html {
   margin-top: auto;
 
   &__inner {
-    max-width: 1200px;
+    max-width: 75rem;
     margin: 0 auto;
-    padding: 40px clamp(20px, 4vw, 64px);
+    padding: 2.5rem clamp(1.25rem, 4vw, 4rem);
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
-    gap: 32px;
+    gap: 2rem;
 
     @media screen and (max-width: 768px) {
       grid-template-columns: 1fr;
       text-align: center;
-      gap: 18px;
+      gap: 1.125rem;
     }
   }
 
   &__brand {
     font-family: $title-font;
     font-weight: 700;
-    font-size: 22px;
-    letter-spacing: -1px;
+    font-size: 1.375rem;
+    letter-spacing: -0.0455em;
     color: var(--color-text);
 
     span {
@@ -912,22 +1030,19 @@ html {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 24px;
+    gap: 1.5rem;
 
     a {
       color: var(--color-text);
       text-decoration: none;
-      font-size: 15px;
-
-      &:hover {
-        font-family: $italic-font;
-        font-style: italic;
-      }
+      font-size: 0.9375rem;
+      @include text-button;
+      @include font-swap;
     }
   }
 
   &__meta {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--color-text);
     font-family: $italic-font;
     font-style: italic;
@@ -943,9 +1058,9 @@ html {
 
 .post-card {
   display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 28px;
-  padding: 28px 0;
+  grid-template-columns: 13.75rem 1fr;
+  gap: 1.75rem;
+  padding: 1.75rem 0;
   border-top: 1px solid var(--color-border);
   text-decoration: none;
   color: inherit;
@@ -956,26 +1071,26 @@ html {
 
   &__cover img {
     width: 100%;
-    height: 160px;
+    height: 10rem;
     object-fit: cover;
     filter: grayscale(1);
     display: block;
   }
 
   &__meta {
-    font-size: 13px;
+    font-size: 0.8125rem;
     font-family: $italic-font;
     font-style: italic;
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
   }
 
   &__title {
     font-family: $title-font;
     font-weight: 600;
-    font-size: 28px;
-    letter-spacing: -1px;
+    font-size: 1.75rem;
+    letter-spacing: -0.0357em;
     line-height: 1.1;
-    margin: 0 0 10px;
+    margin: 0 0 0.625rem;
     color: var(--color-text);
 
     span {
@@ -986,17 +1101,17 @@ html {
   }
 
   &__excerpt {
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.5;
-    margin: 0 0 12px;
+    margin: 0 0 0.75rem;
     max-width: 60ch;
   }
 
   &__tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    font-size: 12px;
+    gap: 0.5rem;
+    font-size: 0.75rem;
     font-family: $italic-font;
     font-style: italic;
     color: var(--color-text);
@@ -1021,39 +1136,51 @@ html {
 
 .post-meta {
   display: flex;
-  gap: 18px;
-  font-size: 14px;
+  gap: 1.125rem;
+  font-size: 0.875rem;
   font-family: $italic-font;
   font-style: italic;
   color: var(--color-text);
-  margin-top: 18px;
+  margin-top: 1.125rem;
+}
+
+/* Rule between the post header and the article body */
+.post-divider {
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  margin: 2rem 0;
+}
+
+.post-meta + .tag-list {
+  margin-top: 1.5rem;
 }
 
 .post-nav {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin-top: 64px;
-  padding-top: 24px;
+  gap: 1.5rem;
+  margin-top: 4rem;
+  padding-top: 1.5rem;
   border-top: 1px solid var(--color-border);
 
   a {
     text-decoration: none;
     color: var(--color-text);
+    @include text-button;
 
     span {
       display: block;
       font-family: $italic-font;
       font-style: italic;
-      font-size: 13px;
-      margin-bottom: 6px;
+      font-size: 0.8125rem;
+      margin-bottom: 0.375rem;
     }
 
     strong {
       font-family: $title-font;
       font-weight: 500;
-      font-size: 20px;
-      letter-spacing: -0.5px;
+      font-size: 1.25rem;
+      letter-spacing: -0.025em;
       color: var(--color-text);
     }
   }
@@ -1073,24 +1200,25 @@ html {
 .tag-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 40px;
+  gap: 0.625rem;
+  margin-bottom: 2.5rem;
 
   a {
     border: 1px solid var(--color-border);
-    padding: 6px 14px;
+    padding: 0.375rem 0.875rem;
     text-decoration: none;
     color: var(--color-text);
-    font-size: 14px;
+    font-size: 0.875rem;
+    @include text-button;
 
     &:before {
       content: '#';
     }
 
     &:hover {
-      background: var(--color-bg);
-      color: var(--color-bg);
-      border-color: var(--color-border);
+      background: var(--color-bg-inverse);
+      color: var(--color-text-inverse);
+      border-color: var(--color-bg-inverse);
     }
   }
 }
@@ -1100,14 +1228,14 @@ html {
 .contact-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  margin-top: 32px;
+  gap: 1.125rem;
+  margin-top: 2rem;
 
   label {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    font-size: 13px;
+    gap: 0.375rem;
+    font-size: 0.8125rem;
     font-family: $italic-font;
     font-style: italic;
   }
@@ -1115,11 +1243,11 @@ html {
   input,
   textarea {
     font-family: $subtitle-font;
-    font-size: 16px;
+    font-size: 1rem;
     background: transparent;
     border: 0;
     border-bottom: 1px solid var(--color-border);
-    padding: 10px 0;
+    padding: 0.625rem 0;
     color: var(--color-text);
 
     &:focus {
@@ -1128,25 +1256,24 @@ html {
   }
 
   textarea {
-    min-height: 140px;
+    min-height: 8.75rem;
     resize: vertical;
   }
 
   button {
     align-self: flex-start;
-    font-family: $title-font;
-    font-weight: 600;
-    font-size: 16px;
-    background: var(--color-bg);
-    color: var(--color-bg);
-    border: 0;
-    padding: 14px 28px;
-    cursor: pointer;
-    letter-spacing: -0.3px;
+    @include solid-button;
 
-    &:hover {
-      opacity: 0.9;
+    &:disabled {
+      opacity: 0.6;
+      cursor: progress;
     }
+  }
+
+  &__status {
+    margin: 0;
+    font-size: 0.875rem;
+    min-height: 1.3em;
   }
 }
 
@@ -1155,8 +1282,8 @@ html {
 .work-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 32px;
-  margin-top: 32px;
+  gap: 2rem;
+  margin-top: 2rem;
 
   @media screen and (max-width: 560px) {
     grid-template-columns: 1fr;
@@ -1169,31 +1296,31 @@ html {
 
   img {
     width: 100%;
-    height: 260px;
+    height: 16.25rem;
     object-fit: cover;
     filter: grayscale(1);
     display: block;
-    margin-bottom: 14px;
+    margin-bottom: 0.875rem;
   }
 
   &__year {
     font-family: $italic-font;
     font-style: italic;
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--color-text);
   }
 
   &__title {
     font-family: $title-font;
     font-weight: 600;
-    font-size: 22px;
-    letter-spacing: -0.5px;
-    margin: 4px 0 6px;
+    font-size: 1.375rem;
+    letter-spacing: -0.0227em;
+    margin: 0.25rem 0 0.375rem;
     color: var(--color-text);
   }
 
   &__summary {
-    font-size: 15px;
+    font-size: 0.9375rem;
     line-height: 1.4;
     max-width: 40ch;
   }
@@ -1209,13 +1336,13 @@ html {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 40px;
+  padding: 2.5rem;
 
   &__code {
     font-family: $title-font;
     font-weight: 700;
-    font-size: clamp(120px, 28vw, 320px);
-    letter-spacing: -8px;
+    font-size: clamp(7.5rem, 28vw, 20rem);
+    letter-spacing: -0.025em;
     line-height: 1;
     color: var(--color-text);
   }
@@ -1223,13 +1350,22 @@ html {
   &__title {
     font-family: $italic-font;
     font-style: italic;
-    font-size: 28px;
-    margin: 8px 0 24px;
+    font-size: 1.75rem;
+    margin: 0.5rem 0 1.5rem;
   }
 
   a {
     color: var(--color-text);
     text-decoration: underline;
-    text-underline-offset: 4px;
+    text-underline-offset: 0.25rem;
+    @include text-button;
   }
+}
+
+.button {
+  @include solid-button;
+}
+
+.thanks__button {
+  margin-top: 1.5rem;
 }

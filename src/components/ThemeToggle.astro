@@ -21,8 +21,8 @@ import { Sun, Moon } from '@lucide/astro';
     box-sizing: border-box;
     display: grid;
     place-items: center;
-    width: 32px;
-    height: 32px;
+    width: 2rem;
+    height: 2rem;
     cursor: pointer;
     color: var(--color-text);
 
@@ -40,6 +40,13 @@ import { Sun, Moon } from '@lucide/astro';
       transition:
         transform $duration $easing,
         opacity $duration ease;
+
+      // Lucide renders width/height attributes in px; size it from the root font size instead
+      :global(svg) {
+        width: 1.375rem;
+        height: 1.375rem;
+        margin: 0; // cancel the .blog-menu svg margin when used inside the menu
+      }
     }
 
     // Light theme (default): sun visible, moon tucked away

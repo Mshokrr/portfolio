@@ -6,8 +6,9 @@ interface Entry {
   data: {
     title: string;
     subtitle: string;
-    date: string;
+    year: string;
     order: number;
+    type: string;
   };
 }
 
@@ -17,8 +18,10 @@ interface Props {
   seeAllHref?: string;
 }
 
-const { entries, heading = 'Experience', seeAllHref = '#' } = Astro.props;
-const sorted = entries.sort((a, b) => a.data.order - b.data.order);
+const { entries, heading = 'Experience', seeAllHref = '/career' } = Astro.props;
+const sorted = entries
+  .filter((e) => e.data.type === 'work/career')
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 
 <div class="blog-part right-blog">
@@ -33,7 +36,7 @@ const sorted = entries.sort((a, b) => a.data.order - b.data.order);
         <div class="blog-right-container">
           <div class="blog-title-date">
             <div class="blog-right-page">{e.data.order}</div>
-            <div class="date">{e.data.date}</div>
+            <div class="date">{e.data.year}</div>
           </div>
           <div class="blog-right-page-title">{e.data.title}</div>
           <div class="blog-right-page-subtitle">{e.data.subtitle}</div>

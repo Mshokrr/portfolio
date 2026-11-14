@@ -17,7 +17,8 @@ interface Props {
 
 const {
   items = [
-    { label: 'Work', href: '/work' },
+    { label: 'Featured', href: '/work' },
+    { label: 'Work', href: '/career' },
     // { label: 'Studio', href: '/studio' },
     { label: 'Blog', href: '/blog' },
     { label: 'Contact', href: '/contact' },
@@ -54,7 +55,6 @@ const {
             stroke-width=".7"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="feather feather-arrow-up-right"
             viewBox="0 0 24 24"
           >
             <path d="M7 17L17 7M7 7h10v10" />
@@ -63,7 +63,7 @@ const {
       </a>
     ))
   }
-  <div class="blog-menu toggle-theme">
+  <div class="blog-menu">
     <ThemeToggle />
   </div>
   <a href={mentionHref} class="blog-menu mention">{mention}</a>
