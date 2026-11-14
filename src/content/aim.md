@@ -11,7 +11,6 @@ readTime: 'Cairo, Egypt'
 date: 2019-01-01
 year: 2019 - 2022
 type: work/career
-order: 3
 pageNumber: 'Experience 03'
 tags: ['Product Engineering', 'Node.js', 'NestJS', 'Leadership', 'Scrum']
 ---

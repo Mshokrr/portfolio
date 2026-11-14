@@ -1,5 +1,5 @@
 ---
-import { Download } from '@lucide/astro';
+import { FileText } from '@lucide/astro';
 import ThemeToggle from './ThemeToggle.astro';
 
 interface MenuItem {
@@ -59,8 +59,13 @@ const {
   <div class="blog-menu">
     <ThemeToggle />
   </div>
-  <a href="/Mohamed-Shokr-Resume.pdf" class="blog-menu resume" download="Mohamed-Shokr-Resume.pdf">
-    <Download stroke-width={2} aria-hidden="true" />
+  <a
+    href="/Mohamed-Shokr-Resume.pdf"
+    class="blog-menu resume"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <FileText stroke-width={2} aria-hidden="true" />
     Resume
   </a>
   <a

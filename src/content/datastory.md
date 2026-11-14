@@ -11,7 +11,6 @@ readTime: 'Stockholm, Sweden'
 date: 2024-01-01
 year: 2024 - Present
 type: work/career
-order: 1
 pageNumber: 'Experience 01'
 tags: ['Data Engineering', 'ETL', 'Integrations', 'AWS', 'Python']
 ---

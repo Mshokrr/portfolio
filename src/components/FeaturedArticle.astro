@@ -4,7 +4,7 @@ interface Props {
   date: Date;
   emphasis?: string;
   headline: string;
-  cover: string;
+  cover?: string;
   author: string;
   readTime: string;
   excerpt: string;
@@ -30,7 +30,7 @@ const parts = emphasis ? headline.split('{emphasis}') : [headline];
     <div class="blog-menu small-title date">{formatted}</div>
   </div>
   <div class="blog-article">
-    <img src={cover} alt={bigTitle} />
+    {cover && <img src={cover} alt={bigTitle} />}
     <h2>
       {
         emphasis ? (

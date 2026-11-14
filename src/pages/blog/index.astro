@@ -2,9 +2,9 @@
 import { getCollection } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
 
-const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort(
-  (a, b) => +b.data.date - +a.data.date,
-);
+const posts = (
+  await getCollection('posts', ({ data }) => !data.draft && data.type === 'post')
+).sort((a, b) => +b.data.date - +a.data.date);
 
 const fmt = (d: Date) =>
   `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`;
@@ -25,10 +25,15 @@ const renderHeadline = (headline: string, emphasis?: string) => {
       posts.map((post) => {
         const parts = renderHeadline(post.data.headline, post.data.emphasis).split('__');
         return (
-          <a class="post-card" href={`/blog/${post.id}`}>
-            <div class="post-card__cover">
-              <img src={post.data.cover} alt="" loading="lazy" />
-            </div>
+          <a
+            class:list={['post-card', { 'post-card--no-cover': !post.data.cover }]}
+            href={`/blog/${post.id}`}
+          >
+            {post.data.cover && (
+              <div class="post-card__cover">
+                <img src={post.data.cover} alt="" loading="lazy" />
+              </div>
+            )}
             <div>
               <div class="post-card__meta">
                 {fmt(post.data.date)} · {post.data.author} · {post.data.readTime}

@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import PageLayout from '../layouts/PageLayout.astro';
 
-const items = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+const items = (await getCollection('work')).sort((a, b) => +b.data.date - +a.data.date);
 ---
 
 <PageLayout
@@ -28,7 +28,7 @@ const items = (await getCollection('work')).sort((a, b) => a.data.order - b.data
               target={item.data.url ? '_blank' : undefined}
               rel={item.data.url ? 'noopener' : undefined}
             >
-              <img src={item.data.cover} alt="" loading="lazy" />
+              {item.data.cover && <img src={item.data.cover} alt="" loading="lazy" />}
               <div class="work-item__year">{item.data.year}</div>
               <div class="work-item__title">{item.data.title}</div>
               <div class="work-item__summary">{item.data.summary}</div>

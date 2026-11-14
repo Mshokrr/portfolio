@@ -4,7 +4,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
 
 const workItems = (
   await getCollection('posts', ({ data }) => !data.draft && data.type === 'work/career')
-).sort((a, b) => a.data.order - b.data.order);
+).sort((a, b) => +b.data.date - +a.data.date);
 
 const fmt = (d: Date) =>
   `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`;
@@ -21,10 +21,15 @@ const renderHeadline = (headline: string, emphasis?: string) => {
       workItems.map((post) => {
         const parts = renderHeadline(post.data.headline, post.data.emphasis).split('__');
         return (
-          <a class="post-card" href={`/career/${post.id}`}>
-            <div class="post-card__cover">
-              <img src={post.data.cover} alt="" loading="lazy" />
-            </div>
+          <a
+            class:list={['post-card', { 'post-card--no-cover': !post.data.cover }]}
+            href={`/career/${post.id}`}
+          >
+            {post.data.cover && (
+              <div class="post-card__cover">
+                <img src={post.data.cover} alt="" loading="lazy" />
+              </div>
+            )}
             <div>
               <div class="post-card__meta">
                 {fmt(post.data.date)} · {post.data.author} · {post.data.readTime}

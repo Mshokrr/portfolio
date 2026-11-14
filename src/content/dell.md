@@ -11,7 +11,6 @@ readTime: 'Cairo, Egypt'
 date: 2022-01-01
 year: 2022 - 2024
 type: work/career
-order: 2
 pageNumber: 'Experience 02'
 tags: ['5G', 'RAN', 'ORAN', 'Microservices', 'Go', 'Python', 'C++', 'C']
 ---

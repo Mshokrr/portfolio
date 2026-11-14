@@ -11,7 +11,6 @@ readTime: 'Cairo, Egypt'
 date: 2017-01-01
 year: 2017 - 2019
 type: work/career
-order: 4
 pageNumber: 'Experience 04'
 tags: ['Node.js', 'CI/CD', 'Containers', 'iOS', 'Swift']
 ---

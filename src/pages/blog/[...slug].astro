@@ -50,6 +50,8 @@ const fmt = (d: Date) =>
 
   <hr class="post-divider" />
 
+  {post.data.summary && <p class="post-summary">{post.data.summary}</p>}
+
   <div class="prose">
     <Content />
   </div>

@@ -37,10 +37,15 @@ const fmt = (d: Date) =>
   <div class="post-list">
     {
       posts.map((post) => (
-        <a class="post-card" href={`/blog/${post.id}`}>
-          <div class="post-card__cover">
-            <img src={post.data.cover} alt="" loading="lazy" />
-          </div>
+        <a
+          class:list={['post-card', { 'post-card--no-cover': !post.data.cover }]}
+          href={`/${post.data.type === 'work/career' ? 'career' : 'blog'}/${post.id}`}
+        >
+          {post.data.cover && (
+            <div class="post-card__cover">
+              <img src={post.data.cover} alt="" loading="lazy" />
+            </div>
+          )}
           <div>
             <div class="post-card__meta">
               {fmt(post.data.date)} · {post.data.author}

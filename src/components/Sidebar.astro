@@ -3,11 +3,12 @@ import Marquee from './Marquee.astro';
 import Circle from './Circle.astro';
 
 interface Entry {
+  id: string;
   data: {
     title: string;
     subtitle: string;
     year: string;
-    order: number;
+    date: Date;
     type: string;
   };
 }
@@ -21,7 +22,7 @@ interface Props {
 const { entries, heading = 'Experience', seeAllHref = '/career' } = Astro.props;
 const sorted = entries
   .filter((e) => e.data.type === 'work/career')
-  .sort((a, b) => a.data.order - b.data.order);
+  .sort((a, b) => +b.data.date - +a.data.date);
 ---
 
 <div class="blog-part right-blog">
@@ -32,14 +33,31 @@ const sorted = entries
   </div>
   <div class="blog-right">
     {
-      sorted.map((e) => (
+      sorted.map((e, i) => (
         <div class="blog-right-container">
           <div class="blog-title-date">
-            <div class="blog-right-page">{e.data.order}</div>
+            <div class="blog-right-page">{i + 1}</div>
             <div class="date">{e.data.year}</div>
           </div>
           <div class="blog-right-page-title">{e.data.title}</div>
           <div class="blog-right-page-subtitle">{e.data.subtitle}</div>
+          <a href={`/career/${e.id}`} class="blog-right-more">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M15 10l5 5-5 5" />
+              <path d="M4 4v7a4 4 0 004 4h12" />
+            </svg>
+            See More
+            <span class="visually-hidden">about {e.data.title}</span>
+          </a>
         </div>
       ))
     }
