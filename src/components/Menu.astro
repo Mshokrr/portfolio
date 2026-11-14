@@ -1,4 +1,5 @@
 ---
+import { Download } from '@lucide/astro';
 import ThemeToggle from './ThemeToggle.astro';
 
 interface MenuItem {
@@ -9,10 +10,6 @@ interface MenuItem {
 
 interface Props {
   items?: MenuItem[];
-  mention?: string;
-  mentionHref?: string;
-  subscribeLabel?: string;
-  subscribeHref?: string;
 }
 
 const {
@@ -23,10 +20,6 @@ const {
     { label: 'Blog', href: '/blog' },
     { label: 'Contact', href: '/contact' },
   ],
-  mention = '@mshokrr',
-  mentionHref = '/',
-  subscribeLabel = 'Subscribe',
-  subscribeHref = '/contact',
 } = Astro.props;
 ---
 
@@ -66,7 +59,10 @@ const {
   <div class="blog-menu">
     <ThemeToggle />
   </div>
-  <a href={mentionHref} class="blog-menu mention">{mention}</a>
+  <a href="/Mohamed-Shokr-Resume.pdf" class="blog-menu resume" download="Mohamed-Shokr-Resume.pdf">
+    <Download stroke-width={2} aria-hidden="true" />
+    Resume
+  </a>
   <a
     href={'https://github.com/Mshokrr'}
     class="blog-menu social"

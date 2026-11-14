@@ -189,7 +189,8 @@ body {
       font-size: clamp(1rem, 1.5vw, 1.1875rem);
     }
 
-    &.social {
+    &.social,
+    &.resume {
       margin-top: 0.5rem;
       font-size: clamp(1rem, 1.5vw, 1.1875rem);
       position: relative;
@@ -201,6 +202,13 @@ body {
         height: 0.85em;
         margin: 0;
       }
+    }
+
+    // Whichever of these comes first (no .mention before it) starts the block that
+    // sits at the bottom of the menu: its auto margin pushes it and everything
+    // after it down.
+    &.resume:not(.mention ~ .resume) {
+      margin-top: auto;
     }
 
     &.rounded {
@@ -269,8 +277,8 @@ body {
 a.blog-menu {
   @include text-button;
 
-  // Only the main menu items swap fonts; mention, social and "See All" just go bolder
-  &:not(.mention, .social, .rounded) {
+  // Only the main menu items swap fonts; mention, social, resume and "See All" just go bolder
+  &:not(.mention, .social, .resume, .rounded) {
     @include font-swap;
   }
 }
@@ -640,11 +648,13 @@ body.menu-open {
   /* The vw-based menu font-size collapses to nothing once the menu becomes
      a drawer — anchor it back to readable sizes. */
   .blog .blog-menu.mention,
-  .blog .blog-menu.social {
+  .blog .blog-menu.social,
+  .blog .blog-menu.resume {
     font-size: 1.125rem;
   }
 
-  .is-menu .blog-menu.mention {
+  .is-menu .blog-menu.mention,
+  .is-menu .blog-menu.resume:not(.mention ~ .resume) {
     margin-top: 3.125rem;
   }
 }

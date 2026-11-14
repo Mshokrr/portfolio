@@ -1,95 +1,50 @@
-# Self Esteem (Astro Template)
+# Mohamed Shokr — Portfolio
 
-![Magazine cover homepage](public/hero.jpeg)
+Personal portfolio and blog, built with [Astro](https://astro.build) and SCSS. It has a magazine-style home page, a career timeline, featured work, essays, and a contact form.
 
-[![Live preview](https://img.shields.io/badge/▶_Live_preview-121418?style=for-the-badge&labelColor=121418&color=e9e6e4)](https://miro.build/templates/self-esteem)
+## What's in it
 
-A magazine-style editorial template built with [Astro](https://astro.build). Original layout by [Aysenur Turk](https://codepen.io/TurkAysenur/pen/gOmMgpx), re-implemented here as a full project.
+- **Home:** a pinned header, scrolling featured articles and an experience sidebar with a ticker.
+- **Career, Work and Blog:** pages generated from Markdown files in `src/content`.
+- **Tags:** an automatic page for every tag.
+- **Contact:** a form that sends email through [Formspree](https://formspree.io), then shows a thank-you page.
+- **Light and dark themes:** a toggle that remembers the choice and follows the system setting by default.
+- **Resume:** a download button in the menu, served from `public/`.
+- **RSS feed and sitemap.**
 
-## Quick start
+## Getting started
 
-Scaffold a new project from this template:
-
-```bash
-# npm
-npm create astro@latest -- --template m-durana/self-esteem-astro
-
-# pnpm
-pnpm create astro@latest --template m-durana/self-esteem-astro
-
-# yarn
-yarn create astro --template m-durana/self-esteem-astro
-
-# bun
-bun create astro@latest --template m-durana/self-esteem-astro
-```
-
-Or use the "Use template" button in the top right or clone directly:
+Requires Node 22.12 or newer.
 
 ```bash
-git clone https://github.com/m-durana/self-esteem-astro.git
-cd self-esteem-astro
 npm install
-```
-
-Then:
-
-```bash
 npm run dev      # http://localhost:4321
-npm run build    # static output to ./dist
+npm run build    # static output in ./dist
+npm run preview  # serve the built site locally
 ```
 
-## Features
-
-- Full-viewport magazine homepage (`/`)
-- `/blog` index + `/blog/[slug]` MDX post pages with prev/next
-- `/tags/[tag]` pages generated from post frontmatter
-- `/studio`, `/contact`, `/work` (data-driven), `/404`
-- RSS at `/rss.xml`, OG/Twitter meta in `BaseLayout`
-- `PageLayout` + `_template.astro.example` for creating new pages
-
-## Structure
+## Project layout
 
 ```
 src/
-├── components/      Menu, Footer, FeaturedArticle, Sidebar, Marquee, Circle, StickyHeader
-├── content/         posts/ (md+mdx), featured/, work/
-├── content.config.ts
-├── layouts/         BaseLayout, PageLayout
-├── pages/           index, blog/, tags/, studio, contact, work, 404, rss.xml
-└── styles/global.scss
+  content/      Markdown for posts, work and career entries
+  pages/        Routes (home, blog, career, work, tags, contact, thanks)
+  components/   Menu, sidebar, ticker, theme toggle, and so on
+  layouts/      BaseLayout (home) and PageLayout (inner pages)
+  styles/       global.scss and themes.scss (colour tokens)
+public/         Static files: favicons, resume PDF
 ```
 
-See [STYLEGUIDE.md](STYLEGUIDE.md) for tokens, type scale, and a guide for staying on-brand.
+## Editing content
 
-## Authoring a post
+Each Markdown file in `src/content` has frontmatter (title, dates, tags, type and so on) that is validated by the schema in `src/content.config.ts`. Add a file to add an entry.
 
-Drop a `.md` or `.mdx` file in `src/content/posts/`:
+To change colours, edit the tokens in `src/styles/themes.scss`. To update the resume, replace `public/Mohamed-Shokr-Resume.pdf`.
 
-```md
----
-title: 'Your Article Title'
-bigTitle: 'Hero'
-emphasis: 'Word' # optional, italicised inside the headline
-headline: 'Sharing The {emphasis} Acclaim About Motivation'
-excerpt: 'Teaser shown on the cover and in /blog.'
-author: 'Jane Doe'
-date: 2026-01-01
-cover: 'https://images.unsplash.com/...'
-tags: ['attention', 'quiet']
-featured: true # appear on the magazine cover
-pageNumber: 'NO. 01' # optional, used by the sticky header
----
+## Checks and deployment
 
-Long-form body.
-```
+CI runs `npm run format:check` (Prettier) and `npm run build` on every push and pull request. Run `npm run format` to fix formatting. The site is fully static, so it deploys to any static host, such as Vercel.
 
-Sidebar entries (`src/content/featured/`) and portfolio items (`src/content/work/`) use smaller schemas; see `content.config.ts`.
+## Credits
 
-## Adding a subpage
-
-Copy `src/pages/_template.astro.example` to `src/pages/<name>.astro`, edit the props, add a link in `src/components/Menu.astro` if it should appear in nav.
-
-## License
-
-MIT License. Original CodePen layout © Aysenur Turk
+Based on the [Self Esteem](https://github.com/m-durana/self-esteem-astro) Astro template, whose layout is by [Aysenur Turk](https://codepen.io/TurkAysenur/pen/gOmMgpx). Released under the license in `LICENSE`.
