@@ -7,7 +7,7 @@ emphasis: '5G networks'
 excerpt: 'Part of the 5G software engineering team, building hyper-scalable, near real-time cloud-native network components while leading architecture, agile ceremonies and mentoring.'
 summary: 'Cloud-native 5G network components, microservice architecture and agile leadership.'
 author: '5G Software Engineer'
-readTime: 'Cairo, Egypt'
+annotation: 'Cairo, Egypt'
 date: 2022-01-01
 year: 2022 - 2024
 type: work/career

@@ -1,9 +1,11 @@
 ---
 title: 'Issue No. 02 — Quiet'
+annotation: '5 Min Read'
 year: '2021'
 cover: 'https://images.unsplash.com/photo-1529255484355-cb73c33c04bb?auto=format&fit=crop&w=1200&q=70'
 summary: 'Vulnerability, quarantine, and the small architecture of a long year.'
 order: 2
+hidden: true
 ---
 
 For most of a year, we were given the experiment we'd never have run on

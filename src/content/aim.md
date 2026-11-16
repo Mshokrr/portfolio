@@ -7,7 +7,7 @@ emphasis: 'AIM Insights'
 excerpt: 'Web development lead with full responsibility for the backend and API of the flagship product, plus a subscription model, test suites and a hiring process for the engineering team.'
 summary: 'Led the flagship AIM Insights product, its subscription model and the team hiring process.'
 author: 'Web Development Lead'
-readTime: 'Cairo, Egypt'
+annotation: 'Cairo, Egypt'
 date: 2019-01-01
 year: 2019 - 2022
 type: work/career

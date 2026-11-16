@@ -5,10 +5,11 @@ emphasis: 'Understanding'
 headline: 'How 2020 Changed {emphasis} Of Mental Health'
 excerpt: 'Reflections on the shifts of 2020 and how a year of disruption rewired our collective understanding of attention.'
 author: 'Scarlett Witch'
-readTime: '7 Min Read'
+annotation: '7 Min Read'
 date: 2021-08-21
 cover: 'https://images.unsplash.com/photo-1616248249518-b16013cd4e42?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTkzfHxibGFjayUyMGFuZCUyMHdoaXRlfGVufDB8MHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=70'
-featured: true
+featured: false
+hidden: true
 tags: ['mental-health', 'attention', 'control']
 ---
 

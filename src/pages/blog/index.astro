@@ -1,13 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
+import { entryPeriod } from '../../utils/format';
 
 const posts = (
-  await getCollection('posts', ({ data }) => !data.draft && data.type === 'post')
+  await getCollection('posts', ({ data }) => !data.draft && !data.hidden && data.type === 'post')
 ).sort((a, b) => +b.data.date - +a.data.date);
-
-const fmt = (d: Date) =>
-  `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`;
 
 const renderHeadline = (headline: string, emphasis?: string) => {
   if (!emphasis) return headline;
@@ -36,7 +34,9 @@ const renderHeadline = (headline: string, emphasis?: string) => {
             )}
             <div>
               <div class="post-card__meta">
-                {fmt(post.data.date)} · {post.data.author} · {post.data.readTime}
+                {[entryPeriod(post.data), post.data.author, post.data.annotation]
+                  .filter(Boolean)
+                  .join(' · ')}
               </div>
               <h2 class="post-card__title">
                 {parts.map((part, i) => (i % 2 === 1 ? <span>{part}</span> : <>{part}</>))}

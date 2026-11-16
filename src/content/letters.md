@@ -5,9 +5,10 @@ emphasis: 'Writing'
 headline: 'On {emphasis} Letters Again'
 excerpt: 'The slow correspondence is back, and with it a different kind of attention to the people we love.'
 author: 'Tom Hiddleston'
-readTime: '5 Min Read'
+annotation: '5 Min Read'
 date: 2022-03-02
 cover: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1600&q=70'
+hidden: true
 tags: ['love', 'writing']
 ---
 

@@ -7,7 +7,7 @@ emphasis: 'travel'
 excerpt: 'Lead architect and backend developer for two travel-industry web applications, plus mobile work on a cross-platform app and a native iOS app.'
 summary: 'Backend lead for two travel web applications, a reusable Node.js architecture and containerized CI/CD, plus mobile work.'
 author: 'Backend Engineer, Mobile Developer'
-readTime: 'Cairo, Egypt'
+annotation: 'Cairo, Egypt'
 date: 2017-01-01
 year: 2017 - 2019
 type: work/career

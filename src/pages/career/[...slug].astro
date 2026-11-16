@@ -1,7 +1,6 @@
 ---
-import { slugify } from '../../utils/slugify';
-import { getCollection, render } from 'astro:content';
-import PageLayout from '../../layouts/PageLayout.astro';
+import { getCollection } from 'astro:content';
+import EntryLayout from '../../layouts/EntryLayout.astro';
 
 export async function getStaticPaths() {
   const entries = await getCollection(
@@ -9,42 +8,13 @@ export async function getStaticPaths() {
     ({ data }) => !data.draft && data.type === 'work/career',
   );
 
-  return entries.map((post) => ({
-    params: { slug: post.id },
-    props: { post },
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
   }));
 }
 
-const { post } = Astro.props;
-const { Content } = await render(post);
+const { entry } = Astro.props;
 ---
 
-<PageLayout
-  title={post.data.bigTitle}
-  description={post.data.excerpt}
-  eyebrow={post.data.pageNumber ?? 'Essay'}
-  heroImage={post.data.cover}
-  pageTitle={`${post.data.title} — Mohamed Shokr`}
->
-  <div class="post-meta">
-    <span>{post.data.author}</span>
-    <span>{post.data.year}</span>
-    <span>{post.data.readTime}</span>
-  </div>
-
-  {
-    post.data.tags.length > 0 && (
-      <div class="tag-list">
-        {post.data.tags.map((tag) => (
-          <a href={`/tags/${slugify(tag)}`}>{tag}</a>
-        ))}
-      </div>
-    )
-  }
-
-  <hr class="post-divider" />
-
-  <div class="prose">
-    <Content />
-  </div>
-</PageLayout>
+<EntryLayout entry={entry} />

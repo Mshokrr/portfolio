@@ -6,14 +6,14 @@ interface Props {
 }
 
 const {
-  title = 'Leave Your Old Life Behind',
-  subtitle = "Don't try to be like someone else, be yourself. Be secure with yourself.",
-  cta = 'Explore',
+  title = 'Get to know me',
+  subtitle = "Reach out and let's have a chat.",
+  cta = "Let's talk",
 } = Astro.props;
 ---
 
 <div class="circle">
   <div class="circle-title">{title}</div>
   <div class="circle-subtitle">{subtitle}</div>
-  <div class="circle-footer">{cta}</div>
+  <div class="circle-footer"><a href="/contact">{cta}</a></div>
 </div>

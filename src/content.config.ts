@@ -10,9 +10,11 @@ const schema = z.object({
   excerpt: z.string().default(''),
   summary: z.string().default(''),
   author: z.string().default('Mohamed'),
-  readTime: z.string().default('5 Min Read'),
+  // Short free-text note shown beside the author (read time, location, ...)
+  annotation: z.string().default(''),
   date: z.coerce.date().default(new Date()),
-  year: z.string().default('2026'),
+  // Optional period label ("2021", "2019 - 2022"); falls back to the date when absent
+  year: z.string().optional(),
   cover: z.string().url().optional(),
   featured: z.boolean().default(false),
   type: z.enum(['work/career', 'work/freelance', 'post']).default('post'),

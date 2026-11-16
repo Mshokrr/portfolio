@@ -1,0 +1,67 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import PageLayout from './PageLayout.astro';
+import { slugify } from '../utils/slugify';
+import { entryLabel, entryPeriod } from '../utils/format';
+
+// One page layout for any content entry (essay, career item, ...). The routes
+// under src/pages only decide which entries they serve.
+interface Props {
+  entry: CollectionEntry<'posts'>;
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+
+// "Engineering the software behind {emphasis}" -> text, <em>, text
+const headlineParts = data.emphasis ? data.headline.split('{emphasis}') : [data.headline];
+const meta = [data.author, entryPeriod(data), data.annotation].filter(Boolean);
+---
+
+<PageLayout
+  title={data.bigTitle || data.title}
+  description={data.excerpt}
+  eyebrow={data.pageNumber ?? entryLabel(data.type)}
+  heroImage={data.cover}
+  pageTitle={`${data.title} — Mohamed Shokr`}
+>
+  <div class="post-meta">
+    {meta.map((item) => <span>{item}</span>)}
+  </div>
+
+  {
+    data.tags.length > 0 && (
+      <div class="tag-list">
+        {data.tags.map((tag) => (
+          <a href={`/tags/${slugify(tag)}`}>{tag}</a>
+        ))}
+      </div>
+    )
+  }
+
+  <hr class="post-divider" />
+
+  {
+    data.headline && (
+      <h2 class="post-headline">
+        {data.emphasis ? (
+          <>
+            {headlineParts[0]}
+            <span>{data.emphasis}</span>
+            {headlineParts[1]}
+          </>
+        ) : (
+          data.headline
+        )}
+      </h2>
+    )
+  }
+
+  {data.summary && <p class="post-summary">{data.summary}</p>}
+
+  <div class="prose">
+    <Content />
+  </div>
+</PageLayout>

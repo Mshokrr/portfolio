@@ -7,7 +7,7 @@ interface Entry {
   data: {
     title: string;
     subtitle: string;
-    year: string;
+    year?: string;
     date: Date;
     type: string;
   };
@@ -37,7 +37,7 @@ const sorted = entries
         <div class="blog-right-container">
           <div class="blog-title-date">
             <div class="blog-right-page">{i + 1}</div>
-            <div class="date">{e.data.year}</div>
+            <div class="date">{e.data.year ?? e.data.date.getFullYear()}</div>
           </div>
           <div class="blog-right-page-title">{e.data.title}</div>
           <div class="blog-right-page-subtitle">{e.data.subtitle}</div>

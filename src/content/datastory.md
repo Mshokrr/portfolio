@@ -7,7 +7,7 @@ emphasis: 'pipelines'
 excerpt: 'Senior software engineer on the data engineering side of Datastory: ETL pipelines, platform infrastructure and an SDK, including a healthcare solution for the Swedish government.'
 summary: 'Senior software engineer building ETL pipelines and cloud infrastructure for a data platform.'
 author: 'Senior Software Engineer'
-readTime: 'Stockholm, Sweden'
+annotation: 'Stockholm, Sweden'
 date: 2024-01-01
 year: 2024 - Present
 type: work/career
